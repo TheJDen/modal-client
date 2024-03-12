@@ -181,7 +181,7 @@ def update_changelog(ctx):
     # Get the corresponding PR description via the GitHub API
     url = f"https://api.github.com/repos/modal-labs/modal-client/pulls/{pull_number}"
     headers = {"Authorization": f"Bearer {os.environ['GITHUB_TOKEN']}", "Accept": "application/vnd.github.v3+json"}
-    response = requests.get(url, headers=headers).json()
+    response = requests.get(url, headers=headers, timeout=60).json()
     pr_description = response.get("body")
     if pr_description is None:
         print("Aborting: No PR description in response from GitHub API")
