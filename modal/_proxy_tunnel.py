@@ -5,6 +5,7 @@ import subprocess
 import tempfile
 
 from modal_proto import api_pb2
+from security import safe_command
 
 
 @contextlib.contextmanager
@@ -52,7 +53,7 @@ def proxy_tunnel(info: api_pb2.ProxyInfo):
             "-o",
             "LogLevel=ERROR",  # disable warning "Permanently added '...' to the list of known hosts."
         ]
-        p = subprocess.Popen(cmd)
+        p = safe_command.run(subprocess.Popen, cmd)
 
         import time
 
