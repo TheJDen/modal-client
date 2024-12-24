@@ -4,6 +4,7 @@
 import inspect
 import re
 import subprocess
+from security import safe_requests
 
 if not hasattr(inspect, "getargspec"):
     # Workaround until invoke supports Python 3.11
@@ -15,8 +16,6 @@ import os
 import sys
 from pathlib import Path
 from typing import Optional
-
-import requests
 from invoke import task
 
 year = datetime.date.today().year
@@ -181,7 +180,7 @@ def update_changelog(ctx):
     # Get the corresponding PR description via the GitHub API
     url = f"https://api.github.com/repos/modal-labs/modal-client/pulls/{pull_number}"
     headers = {"Authorization": f"Bearer {os.environ['GITHUB_TOKEN']}", "Accept": "application/vnd.github.v3+json"}
-    response = requests.get(url, headers=headers).json()
+    response = safe_requests.get(url, headers=headers).json()
     pr_description = response.get("body")
     if pr_description is None:
         print("Aborting: No PR description in response from GitHub API")
