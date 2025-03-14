@@ -56,7 +56,7 @@ def check_copyright(ctx, fix=False):
             if fn.endswith(".py") and not fn.endswith(".notebook.py") and "/site-packages/" not in root
         ]
         for fn in fns:
-            first_line = open(fn).readline()
+            first_line = open(fn).readline(5_000_000)
             if not first_line.startswith(copyright_header_start):
                 if fix:
                     print(f"Fixing {fn}...")
