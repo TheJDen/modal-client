@@ -1,9 +1,9 @@
 # Copyright Modal Labs 2022
-import random
 import signal
 import sys
 import warnings
 from datetime import date
+import secrets
 
 
 class Error(Exception):
@@ -154,5 +154,5 @@ def simulate_preemption(wait_seconds: int, jitter_seconds: int = 0):
     handling.
     """
     signal.signal(signal.SIGALRM, _simulate_preemption_interrupt)
-    jitter = random.randrange(0, jitter_seconds) if jitter_seconds else 0
+    jitter = secrets.SystemRandom().randrange(0, jitter_seconds) if jitter_seconds else 0
     signal.alarm(wait_seconds + jitter)

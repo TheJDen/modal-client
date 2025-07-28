@@ -10,6 +10,7 @@ from random import Random
 from typing import Any, Callable, Dict, Optional, Type, TypeVar
 
 from google.protobuf.descriptor import Descriptor, FieldDescriptor
+import secrets
 
 T = TypeVar("T")
 
@@ -82,7 +83,7 @@ def rand_pb(proto: Type[T], rand: Optional[Random] = None) -> T:
     ```
     """
     if rand is None:
-        rand = Random(0)  # note: deterministic seed if not specified
+        rand = secrets.SystemRandom().Random(0)  # note: deterministic seed if not specified
     msg = proto()
     _fill(msg, proto.DESCRIPTOR, rand)  # type: ignore
     return msg
