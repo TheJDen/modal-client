@@ -17,6 +17,7 @@ from modal.secret import _Secret
 from modal_proto import api_pb2
 from modal_utils.async_utils import synchronizer
 from modal_utils.grpc_utils import retry_transient_errors
+from security import safe_command
 
 secret_cli = typer.Typer(name="secret", help="Manage secrets.", no_args_is_help=True)
 
@@ -96,7 +97,7 @@ def get_text_from_editor(key) -> str:
         if platform.system() != "Windows":
             editor = os.getenv("EDITOR", "vi")
             input(f"Pressing enter will open an external editor ({editor}) for editing '{key}'...")
-            status_code = subprocess.call([editor, bufferfile.name])
+            status_code = safe_command.run(subprocess.call, [editor, bufferfile.name])
         else:
             # not tested, but according to https://stackoverflow.com/questions/1442841/lauch-default-editor-like-webbrowser-module
             # this should open an editor on Windows...
